@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <ul>
+        <li class="item">
+            <div class="left-wrapper">
+                <div class="icon">
+                    <img src="./1.jpg" alt="">
+                </div>
+                <div class="desc">
+                    <b>周总</b>
+                </div>
+            </div>
+            <button>下载</button>
+        </li>
+    </ul>
+</body>
+<script>
+    const domStr = `
+    <li class="item">
+        <div class="left-wrapper">
+            <div class="icon">
+                <img src="./1.jpg" alt="">
+            </div>
+             <div class="desc">
+                <b>周总</b>
+            </div>
+        </div>
+        <button>下载</button>
+    </li>
+    `
+    // 生成200个数据
+    let domList = ''
+    for(let i = 0; i< 200; i++){
+        domList+=domStr
+    }
+    // 添加到ul里
+    const ul = document.querySelector('ul')
+    ul.innerHTML = domList
+
+    const items = document.querySelectorAll('.item')
+
+    // offsetHeight 元素的像素高度 包含元素的垂直内边距和边框,水平滚动条的高度,且是一个整数
+    const ulH = ul.offsetHeight
+    const itemH = items[0].offsetHeight + 15 //单个高度+margin
+    // Math.ceil() 函数总是四舍五入并返回大于等于给定数字的最小整数
+    const vieNum = Math.ceil(ulH / itemH)  //视图内能看到几个
+
+    // 节点更改类名
+    function checkInnerView(index){
+        for(let i = 0; i < items.length; i++){
+            const element = items[i]
+            if(i >= index && i <= (index+vieNum)){
+                element.classList.add('active')
+            }else{
+                element.classList.remove('active')
+            }
+        }
+    }
+
+    checkInnerView(0)
+
+    ul.addEventListener('scroll', function () {
+        // Math.floor() 函数总是返回小于等于一个给定数字的最大整数。
+        // 算出当前滚动到的位置 应该再哪个节点的最顶端
+        console.log(itemH)
+        console.log(this.scrollTop)
+        const index = Math.floor(this.scrollTop / itemH)
+
+        checkInnerView(index)
+    })
+</script>
+</html>
